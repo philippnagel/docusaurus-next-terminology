@@ -2,7 +2,8 @@
 
 > [!WARNING]
 > This package is now diverging from the original package.
-> The core of the package is ESM only and tested with Docusaurus v3
+> The core of the package is ESM only and tested with Docusaurus v3.
+> This fork includes newer fixes.
 
 **docusaurus-terminology** is a node package for creating a
 terminology structure in your [Docusaurus](https://docusaurus.io/)
