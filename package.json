@@ -1,6 +1,6 @@
 {
-  "name": "@lunaticmuch/docusaurus-terminology",
-  "version": "1.4.0",
+  "name": "@philippnagel/docusaurus-next-terminology",
+  "version": "1.4.1",
   "description": "A terminology / dictionary add-on for Docusaurus",
   "type": "module",
   "main": "./lib/index.js",
@@ -14,9 +14,9 @@
     "prepack": "npm run build"
   },
   "author": {
-    "name": "Stefano Cislaghi",
-    "email": "s.cislaghi@gmail.com",
-    "url": "https://stefanocislaghi.com/"
+    "name": "Philipp Nagel",
+    "email": "phil@philippnagel.com",
+    "url": "https://kraftwerk.social/"
   },
   "files": [
     "lib/",
@@ -72,6 +72,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LunaticMuch/docusaurus-terminology.git"
+    "url": "https://github.com/philippnagel/docusaurus-next-terminology.git"
   }
 }
