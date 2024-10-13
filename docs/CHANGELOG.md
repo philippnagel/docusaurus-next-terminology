@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.3...v1.0.4) (2024-10-13)
+
+
+### Bug Fixes
+
+* set access to public in semantic release config ([802b804](https://github.com/philippnagel/docusaurus-next-terminology/commit/802b8048aba5d19945bea63cd7f4aa849f0e470e))
+
 ## [1.0.3](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.2...v1.0.3) (2024-10-13)
 
 
