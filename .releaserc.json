@@ -42,7 +42,9 @@
       "@semantic-release/npm",
       {
         "npmPublish": true,
-        "tarballDir": "dist"
+        "tarballDir": "dist",
+        "pkgRoot": ".",
+        "access": "public"
       }
     ],
     "@semantic-release/github"
