@@ -1,6 +1,6 @@
 {
   "name": "@philippnagel/docusaurus-next-terminology",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A terminology / dictionary add-on for Docusaurus",
   "type": "module",
   "main": "./lib/index.js",
