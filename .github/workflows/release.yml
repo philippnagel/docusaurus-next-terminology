@@ -13,7 +13,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    environment: release # Optional: Use if you have configured an environment
+    environment: release
     permissions:
       contents: write
       id-token: write
