@@ -7,13 +7,13 @@ on:
       - beta
 
 permissions:
-  contents: read 
-  
+  contents: read # for checkout
+
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    environment: release
+    environment: release # Optional: Use if you have configured an environment
     permissions:
       contents: write
       id-token: write
@@ -43,10 +43,10 @@ jobs:
         run: npm audit signatures || echo "Skipping invalid attestations"
 
       - name: Setup NPM Authentication
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
         run: npx semantic-release
