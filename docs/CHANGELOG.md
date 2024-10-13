@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.2...v1.0.3) (2024-10-13)
+
+
+### Bug Fixes
+
+* optimized semantic release config ([f59b902](https://github.com/philippnagel/docusaurus-next-terminology/commit/f59b9025a27a5d6e490ace2e6f5249a000b5eb29))
+
 ## [1.0.2](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.1...v1.0.2) (2024-10-13)
 
 
