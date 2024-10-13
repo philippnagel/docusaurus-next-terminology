@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.0...v1.0.1) (2024-10-13)
+
+
+### Bug Fixes
+
+* release script ([1f983c2](https://github.com/philippnagel/docusaurus-next-terminology/commit/1f983c2882f21ca71b8e7ce4cf6d0e7e2af11ea7))
+
 # 1.0.0 (2024-09-02)
 
 
