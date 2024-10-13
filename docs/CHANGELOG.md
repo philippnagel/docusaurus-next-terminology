@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.1...v1.0.2) (2024-10-13)
+
+
+### Bug Fixes
+
+* npm private publishing ([f479317](https://github.com/philippnagel/docusaurus-next-terminology/commit/f4793176d898ae9aba30da9df530a9805a637c85))
+
 ## [1.0.1](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.0...v1.0.1) (2024-10-13)
 
 
