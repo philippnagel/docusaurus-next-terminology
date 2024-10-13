@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.4...v1.0.5) (2024-10-13)
+
+
+### Bug Fixes
+
+* public package ([f66d58b](https://github.com/philippnagel/docusaurus-next-terminology/commit/f66d58bc2fcf2fc816630f6bf7dc83d9868aab64))
+
 ## [1.0.4](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.3...v1.0.4) (2024-10-13)
 
 
