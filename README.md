@@ -36,7 +36,7 @@ The same default environment used by docusaurus satisfies the plugin requirement
 To install the plugin to your Docusaurus repository, use the command:
 
 ```commandline
-npm install @lunaticmuch/docusaurus-terminology
+npm install @philippnagel/docusaurus-next-terminology
 ```
 
 Then, you can add the plugin to `docusaurus.config.js` file of your repository:
@@ -45,7 +45,7 @@ Then, you can add the plugin to `docusaurus.config.js` file of your repository:
 module.exports = {
   // ...
   plugins: [
-    '@lunaticmuch/docusaurus-terminology'
+    '@philippnagel/docusaurus-next-terminology'
   ]
 }
 ```
@@ -56,7 +56,7 @@ the next sections):
 ```js
   plugins: [
     [
-      "@lunaticmuch/docusaurus-terminology",
+      "@philippnagel/docusaurus-next-terminology",
       {
         //options
       }
@@ -116,6 +116,50 @@ a reference (technically a React component) that  will render `term_text` as a
 link to the corresponding term page, which is in turn generated from the 
 `term_name` attribute; furthermore, *hovering* over `term_text` displays a term 
 summary, as extracted from the corresponding term page.
+
+### Set Display Type Option
+
+The plugin supports two display types for term references:
+
+1. **Tooltip** (default): Shows a small popup when hovering over the term
+2. **Popover**: Shows a larger popup when clicking on the term, which is better for longer descriptions
+
+You can configure this in two ways:
+
+#### 1. Global Default
+
+Set the default display type for all terms in your `docusaurus.config.js`:
+
+```js
+plugins: [
+  [
+    '@philippnagel/docusaurus-next-terminology',
+    {
+      // ...other options
+      defaultDisplayType: "popover" // or "tooltip" (default)
+    }
+  ]
+]
+```
+
+#### 2. Per Term
+
+Set the display type for individual terms in their markdown files:
+
+```markdown
+---
+id: term_name
+title: Term page
+hoverText: This hover text will appear in the documentation page
+displayType: popover
+---
+
+#### Term explanation
+content here
+```
+
+The `displayType` attribute in the term file will override the global default.
+
 
 ### Example Usage
 
@@ -215,7 +259,7 @@ name in `docusaurus.config.js` file of your repository:
 
 ```js
   plugins: [
-    '@lunaticmuch/docusaurus-terminology'
+    '@philippnagel/docusaurus-next-terminology'
   ]
 ```
 
@@ -242,7 +286,7 @@ Example:
 ```js
 plugins: [
   [
-    '@lunaticmuch/docusaurus-terminology',
+    '@philippnagel/docusaurus-next-terminology',
     {
       termsDir: './docs/terminology/',
       noParseFiles: ['./docs/terminology/agent.md', './docs/terminology/actor.md'],
@@ -255,8 +299,6 @@ plugins: [
 
 ## To Do
 
-- [ ] Include the option to select a [Popover](https://mui.com/material-ui/react-popover/) 
-as alternative to Tooltip for longer descriptions
 - [ ] Include addtional options in the `Term` tag to control classes
 
 ## Original Author

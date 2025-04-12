@@ -1,5 +1,5 @@
 import path from 'path';
-import fs from 'node:fs';
+import fs from 'node:fs/promises'; // Using promises API consistently
 import parseMD from 'parse-md';
 import { globby } from 'globby';
 import type { IOptions, ITerm } from './types.js';
@@ -15,6 +15,7 @@ interface IFrontmatterGlossary {
   hoverText: string;
   glossaryText: string;
   type: string;
+  displayType?: "tooltip" | "popover";
 }
 
 interface IParsedMd {
@@ -42,10 +43,6 @@ export async function getFiles(
   // fixes paths on Windows environments, globby requires forward slashes
   const fixedPath = basePath.replaceAll('\\', '/');
 
-  // Added the noThrow optional param
-  // in case there is a call to this
-  // function that does not want to
-  // handle the error thrown
   let files: any[] = [];
   // get all files under dir
   try {
@@ -67,11 +64,13 @@ export async function preloadTerms(termsFiles: any[]) {
   for (const term of termsFiles) {
     let fileContent = '';
     try {
-      fileContent = await fs.promises.readFile(term, 'utf8');
+      fileContent = await fs.readFile(term, 'utf8');
     } catch (err) {
-      err.code === 'ENOENT'
-        ? console.log(`File ${term} not found.`)
-        : console.log(`${err}\nExiting...`);
+      if (err.code === 'ENOENT') {
+        console.log(`File ${term} not found.`);
+      } else {
+        console.log(`${err}\nExiting...`);
+      }
       process.exit(1);
     }
     const { metadata } = parseMD(fileContent) as IParsedMd;
@@ -93,6 +92,7 @@ export async function preloadTerms(termsFiles: any[]) {
         hoverText: metadata.hoverText || '',
         glossaryText: metadata.glossaryText || '',
         type: metadata.type || '',
+        displayType: metadata.displayType || '',
         id: metadata.id,
         title: metadata.title || ''
       };
@@ -121,7 +121,7 @@ export function getHeaders(content: string): string {
 export function addJSImportStatement(content: string) {
   const importStatement =
     `\n\nimport Term ` +
-    `from "@lunaticmuch/docusaurus-terminology/components/tooltip.js";\n`;
+    `from "@philippnagel/docusaurus-next-terminology/components/tooltip.js";\n`;
   return importStatement + content;
 }
 
@@ -185,52 +185,44 @@ export function getGlossaryTerm(term: ITerm, path: string) {
     : `\n\n### [${term.title}](${path})`;
 }
 
-export function getOrCreateGlossaryFile(path: string) {
+export async function getOrCreateGlossaryFile(path: string) {
   let fileContent = '';
-  // TODO: Replace with async fs function
-  if (!fs.existsSync(path)) {
+  
+  try {
+    // Check if file exists
+    await fs.access(path);
+    
+    // File exists, read it
+    const content = await fs.readFile(path, { encoding: 'utf8' });
+    const index = content.indexOf('---', 1) + '---'.length;
+    fileContent = content.slice(0, index);
+  } catch (err) {
+    // File doesn't exist, create it
     console.log(
       `! Glossary file does not exist in path: "${path}". Creating...`
     );
     fileContent = glossaryHeader;
-    // TODO: Replace with async fs function
-    // fs.writeFileSync(path, fileContent, "utf8",
-    //   (error: any) => { if (error) throw error; });
+    
     try {
-      fs.writeFileSync(path, fileContent, 'utf8');
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    // TODO: Replace with async fs function
-    try {
-      const content = fs.readFileSync(path, { encoding: 'utf8' });
-      const index = content.indexOf('---', 1) + '---'.length;
-      fileContent = content.slice(0, index);
-    } catch (err) {
-      console.log(err);
+      await fs.writeFile(path, fileContent, 'utf8');
+    } catch (writeErr) {
+      console.log(writeErr);
+      throw writeErr;
     }
   }
+  
   return fileContent;
 }
 
 export function getRelativePath(_: string, target: string, opts: IOptions) {
   // calculate relative path from each file's parent dir
   const targetDir = target.substring(0, target.lastIndexOf('/'));
-  //const relative_url = path.relative(sourceDir, targetDir);
   const relative_url = path.relative(opts.termsDir, targetDir);
   const final_url = path.join(
     opts.termsUrl,
     relative_url,
     target.substring(target.lastIndexOf('/'))
   );
-  // construct the final url by appending the target's filename
-  // if the relative url is empty, it means that the referenced
-  // term is in the same dir, so add a `.`
-  //let final_url = relative_url === ""
-  //  ? "." + target.substr(target.lastIndexOf("/"))
-  //  : relative_url + target.substr(target.lastIndexOf("/"));
-  //console.log(new_rel_url, new_final_url);
-  //  remove .mdx suffix
+  
   return final_url.replace(/(\.mdx?)/g, '');
 }

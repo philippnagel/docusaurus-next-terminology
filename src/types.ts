@@ -9,10 +9,12 @@ export interface IOptions {
   dryRun: boolean;
   debug: boolean;
   patternSeparator: string;
+  defaultDisplayType?: "tooltip" | "popover";
 }
 
 export interface ITerm {
   glossaryText: string;
   hoverText: string;
   title: string;
+  displayType?: "tooltip" | "popover";
 }

@@ -1,8 +1,7 @@
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 import path from 'path';
 import gitDiff from 'git-diff';
 import type { IOptions } from '../types.js';
-
 import {
   getFiles,
   getCleanTokens,
@@ -14,10 +13,9 @@ import {
 
 export async function parser(options: IOptions) {
   options.dryRun && console.log('\n* Dry run enabled *\n');
-
+  
   // Load the term files
   let termsFiles = [];
-
   try {
     termsFiles = await getFiles(options.termsDir, options.noParseFiles);
   } catch (err) {
@@ -27,7 +25,7 @@ export async function parser(options: IOptions) {
     console.log(`Check the path in option "termsDir"\n\n ${err} \nExiting...`);
     process.exit(1);
   }
-
+  
   if (termsFiles.length == 0) {
     console.log(`\u26A0 No term files found`);
     console.log(
@@ -36,12 +34,11 @@ export async function parser(options: IOptions) {
     );
     process.exit(1);
   }
-
+  
   const termsData = await preloadTerms(termsFiles);
   console.log('Iterate through the .md(x) files, looking for term patterns');
-
+  
   let allFiles = [];
-
   try {
     allFiles = await getFiles(options.docsDir, options.noParseFiles);
   } catch (err) {
@@ -51,18 +48,23 @@ export async function parser(options: IOptions) {
     console.log(`Check the path in option "docsDir"\n\n${err} \nExiting...`);
     process.exit(1);
   }
-
-  if (
-    fs.lstatSync(options.docsDir).isFile() &&
-    path.extname(options.docsDir).includes('.md')
-  ) {
-    console.log(
-      `! A single file to be parsed is given in option "docsDir":` +
-        ` "${options.docsDir}"`
-    );
-    allFiles = [options.docsDir];
+  
+  let isFile = false;
+  try {
+    const stats = await fs.stat(options.docsDir);
+    isFile = stats.isFile();
+    
+    if (isFile && path.extname(options.docsDir).includes('.md')) {
+      console.log(
+        `! A single file to be parsed is given in option "docsDir":` +
+          ` "${options.docsDir}"`
+      );
+      allFiles = [options.docsDir];
+    }
+  } catch (err) {
+    console.log(`Error checking if docsDir is a file: ${err}`);
   }
-
+  
   if (!allFiles.length) {
     console.log(
       `\u26A0 No files found. Might be wrong path` +
@@ -70,39 +72,42 @@ export async function parser(options: IOptions) {
     );
     // process.exit(1);
   }
-
+  
   // start counting number of term replacements
   let nmbMatches = 0;
-
   const regex = new RegExp(
     '\\%%.*?\\' + options.patternSeparator + '.*?\\%%',
     'g'
   );
-
+  
   for (const filepath of allFiles) {
     let content = '';
     try {
-      content = await fs.promises.readFile(filepath, 'utf8');
+      content = await fs.readFile(filepath, 'utf8');
     } catch (err) {
       console.log(`\u26A0 Error occurred while reading file: ${filepath}`);
       console.log(`Exiting...`);
       process.exit(1);
     }
-
+    
     const oldContent = content;
     // remove headers of the content of the file
     const headers = getHeaders(content);
     content = content.replace(headers, '');
+    
     // get all regex matches
     const regex_matches = content.match(regex);
+    
     // iterate only pages with regex matches
     if (regex_matches !== null) {
       nmbMatches += regex_matches.length;
+      
       for (const match of regex_matches) {
         const tokens = getCleanTokens(match, options.patternSeparator);
         // for ease of use
         const text = tokens[0];
         const ref = tokens[1];
+        
         const termReference = termsData.find((item) => item.id === ref);
         if (!termReference) {
           console.log(`\nParsing file "${filepath}"...`);
@@ -113,23 +118,32 @@ export async function parser(options: IOptions) {
           console.log('Exiting...');
           process.exit(1);
         }
+        
         const current_file_path = path.resolve(process.cwd(), filepath);
         const relativePath = getRelativePath(
           current_file_path,
           termReference.filepath,
           options
         );
+        
+        // Get the display type from the term or fall back to the default option
+        const displayType = termReference.displayType || options.defaultDisplayType || "tooltip";
+        
         const component =
           `<Term popup="${termReference.hoverText}" ` +
-          `reference="${relativePath}">${text}</Term>`;
+          `reference="${relativePath}" ` +
+          `displayType="${displayType}">${text}</Term>`;
+          
         content = content.replace(match, component);
       }
+      
       // since we are inside the if function
       // we can safely assume that we have
       // replaced at least 1 term, so we can
       // now add the import statement after
       // the headers of the file
       content = headers + addJSImportStatement(content);
+      
       // now the new content can be replaced
       // in the opened file
       // check: dry-run
@@ -137,22 +151,22 @@ export async function parser(options: IOptions) {
         const diff = gitDiff(oldContent, content, { color: true });
         console.log(
           `\n! These changes will not be applied in the file ` +
-            `${filepath}\nShowing the output below:\n\n${diff}\n\n`
+          `${filepath}\nShowing the output below:\n\n${diff}\n\n`
         );
       } else {
         try {
-          await fs.promises.writeFile(filepath, content, 'utf-8');
+          await fs.writeFile(filepath, content, 'utf-8');
         } catch (err) {
           console.log(
             `\u26A0  An error occurred while writing new data ` +
               `to file: ${filepath}\n${err} \nExiting...`
           );
           process.exit(1);
-        } finally {
-          console.log(`\u00BB File ${filepath} is updated.`);
         }
+        console.log(`\u00BB File ${filepath} is updated.`);
       }
     }
   }
+  
   console.log(`\u2713 ${nmbMatches} term replacements completed.`);
 }
