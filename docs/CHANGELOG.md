@@ -1,3 +1,16 @@
+# [1.1.0](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.5...v1.1.0) (2025-04-12)
+
+
+### Bug Fixes
+
+* release workflow adapted to yarn ([97f3cd2](https://github.com/philippnagel/docusaurus-next-terminology/commit/97f3cd2bdf7cb1d915df7a24e4d72a06ad9f1e2e))
+* remove package-lock ([783ff74](https://github.com/philippnagel/docusaurus-next-terminology/commit/783ff74e0876f30955613c675394d103d6d1c798))
+
+
+### Features
+
+* implement popover in addition to tooltip ([56a7650](https://github.com/philippnagel/docusaurus-next-terminology/commit/56a7650fe0e68699557dfdc99fa3d936f091dce2))
+
 ## [1.0.5](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.4...v1.0.5) (2024-10-13)
 
 
