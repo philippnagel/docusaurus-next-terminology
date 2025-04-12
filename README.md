@@ -5,6 +5,8 @@
 > The core of the package is ESM only and tested with Docusaurus v3.
 > This fork includes newer fixes.
 
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com)
+
 **docusaurus-terminology** is a node package for creating a
 terminology structure in your [Docusaurus](https://docusaurus.io/)
 project. This plugin allows you to use terms in your pages that

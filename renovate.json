@@ -1,0 +1,62 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+      "config:base"
+    ],
+    "baseBranches": ["main"],
+    "semanticCommits": "enabled",
+    "semanticCommitType": "chore",
+    "semanticCommitScope": "deps",
+    "rangeStrategy": "auto",
+    "labels": ["dependencies"],
+    "dependencyDashboard": true,
+    "dependencyDashboardTitle": "Dependency Dashboard",
+    "schedule": ["before 5am on monday"],
+    "timezone": "Europe/Berlin",
+    
+    "packageRules": [
+      {
+        "matchPackagePatterns": ["^@mui/"],
+        "groupName": "MUI packages",
+        "groupSlug": "mui"
+      },
+      {
+        "matchPackagePatterns": ["^react", "^@types/react"],
+        "groupName": "React packages",
+        "groupSlug": "react"
+      },
+      {
+        "matchPackagePatterns": ["^@docusaurus"],
+        "groupName": "Docusaurus packages",
+        "groupSlug": "docusaurus"
+      },
+      {
+        "matchPackagePatterns": ["^@types/"],
+        "excludePackagePatterns": ["^@types/react"],
+        "groupName": "Type definitions",
+        "groupSlug": "types"
+      },
+      {
+        "matchDepTypes": ["devDependencies"],
+        "matchUpdateTypes": ["minor", "patch"],
+        "automerge": true
+      },
+      {
+        "matchPackageNames": ["typescript"],
+        "matchUpdateTypes": ["major"],
+        "stabilityDays": 7
+      }
+    ],
+    
+    "lockFileMaintenance": {
+      "enabled": true,
+      "schedule": ["before 5am on monday"],
+      "commitMessageAction": "Update",
+      "commitMessageTopic": "yarn.lock",
+      "commitMessageExtra": "for improved security and dependency resolution",
+      "rebaseWhen": "conflicted"
+    },
+    
+    "yarnDedupeHighest": true,
+    "postUpdateOptions": ["yarnDedupeHighest"]
+  }  

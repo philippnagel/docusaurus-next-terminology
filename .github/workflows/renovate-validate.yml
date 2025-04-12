@@ -1,0 +1,44 @@
+name: Validate Renovate PR
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'yarn.lock'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'renovate[bot]' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          
+      - name: Enable Corepack
+        run: corepack enable
+        
+      - name: Install dependencies
+        run: yarn install --immutable
+        
+      - name: Build
+        run: yarn build
+        
+      - name: Test
+        run: yarn test
+        
+      - name: Validate yarn.lock
+        run: |
+          # Check for duplicate dependencies
+          DUPES=$(yarn dedupe --check)
+          if [ $? -ne 0 ]; then
+            echo "::warning::Duplicates found in yarn.lock. Consider running 'yarn dedupe'."
+            echo "$DUPES"
+          else
+            echo "✅ No duplicates found in yarn.lock"
+          fi
