@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'node:fs/promises'; // Using promises API consistently
 import parseMD from 'parse-md';
-import { globby } from 'globby';
+import { glob } from 'tinyglobby';
 import type { IOptions, ITerm } from './types.js';
 
 const glossaryHeader = `---
@@ -40,14 +40,14 @@ export async function getFiles(
   noParseFiles: string[],
   noThrow = false
 ) {
-  // fixes paths on Windows environments, globby requires forward slashes
+  // fixes paths on Windows environments, glob requires forward slashes
   const fixedPath = basePath.replaceAll('\\', '/');
 
   let files: any[] = [];
   // get all files under dir
   try {
     // get all md files from basePath
-    files = await globby(fixedPath + '**/*.{md,mdx}');
+    files = await glob(fixedPath + '**/*.{md,mdx}');
   } catch (err) {
     if (noThrow) {
       // handle error here
