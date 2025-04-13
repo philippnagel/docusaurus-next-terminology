@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.1.0...v1.2.0) (2025-04-13)
+
+
+### Features
+
+* node22 upgrade ([052e1d8](https://github.com/philippnagel/docusaurus-next-terminology/commit/052e1d8478df7a92a850aa8ada04d11a47352c47))
+
 # [1.1.0](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.0.5...v1.1.0) (2025-04-12)
 
 
