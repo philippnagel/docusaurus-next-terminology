@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.2.0...v1.3.0) (2025-04-17)
+
+
+### Features
+
+* enable compatibility with more node versions and package managers. ([6fb949e](https://github.com/philippnagel/docusaurus-next-terminology/commit/6fb949e9bcb0e2ae0fc2c7399e4d7ed3515495ee))
+
 # [1.2.0](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.1.0...v1.2.0) (2025-04-13)
 
 
