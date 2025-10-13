@@ -16,7 +16,7 @@ import {
 export async function glossary(options: IOptions) {
   options.dryRun && console.log('\n* Dry run enabled *\n');
   let glossaryContent = '';
-  
+
   // Load the term files
   let termsFiles = [];
   try {
@@ -28,7 +28,7 @@ export async function glossary(options: IOptions) {
     console.log(`Check the path in option "termsDir"\n\n ${err} \nExiting...`);
     process.exit(1);
   }
-  
+
   if (termsFiles.length == 0) {
     console.log(`\u26A0  No term files found`);
     console.log(
@@ -37,16 +37,16 @@ export async function glossary(options: IOptions) {
     );
     process.exit(1);
   }
-  
+
   const termsData = await preloadTerms(termsFiles);
-  
+
   // remove terms that don't have title or hoverText
   const cleanTerms = cleanGlossaryTerms(termsData);
   const termsByType = filterTypeTerms(cleanTerms, options.glossaryTermPatterns);
-  
+
   // sort termsData alphabetically
   sortFiles(termsByType);
-  
+
   // append terms to the glossary
   for (const term of termsByType) {
     const current_file_path = path.resolve(
@@ -61,7 +61,7 @@ export async function glossary(options: IOptions) {
     const glossaryTerm = getGlossaryTerm(term, relativePath) as string;
     glossaryContent = glossaryContent + glossaryTerm;
   }
-  
+
   if (options.dryRun) {
     console.log(
       `\n! These changes will not be applied in the glossary file.` +
@@ -69,14 +69,16 @@ export async function glossary(options: IOptions) {
     );
   } else {
     try {
-      const glossaryFile = await getOrCreateGlossaryFile(options.glossaryFilepath);
-      
+      const glossaryFile = await getOrCreateGlossaryFile(
+        options.glossaryFilepath
+      );
+
       await fs.writeFile(
         options.glossaryFilepath,
         glossaryFile + glossaryContent,
         'utf-8'
       );
-      
+
       console.log(`\u00BB Parsing terms in the glossary`);
       options.docsDir = options.glossaryFilepath;
       await parser(options);
@@ -89,6 +91,6 @@ export async function glossary(options: IOptions) {
       process.exit(1);
     }
   }
-  
+
   console.log(`\u2713 ${termsByType.length} terms found.`);
 }
