@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.3.0...v1.3.1) (2025-10-13)
+
+
+### Bug Fixes
+
+* tests run with ts now ([a885673](https://github.com/philippnagel/docusaurus-next-terminology/commit/a88567371bcb146af8ae8953218cf8260f5af7c5))
+
 # [1.3.0](https://github.com/philippnagel/docusaurus-next-terminology/compare/v1.2.0...v1.3.0) (2025-04-17)
 
 
