@@ -12,7 +12,8 @@
 		"sourceMap": true,
 		"strict": false,
 		"strictNullChecks": false,
-		"target": "ES2022"
+		"target": "ES2022",
+		"isolatedModules": true
 	},
 	"exclude": [
 		"node_modules",

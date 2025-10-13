@@ -1,13 +1,14 @@
-const {
+import {
   addJSImportStatement,
   getRelativePath,
   getCleanTokens,
   filterTypeTerms,
   getFiles,
   preloadTerms
-} = require('../src/lib.js');
+} from '../src/lib.js';
+import type { IOptions } from '../src/types.js';
 
-const options = {
+const options: Partial<IOptions> = {
   termsUrl: '/docs/terms',
   termsDir: '/docs/'
 };
@@ -15,7 +16,8 @@ const options = {
 describe('get relative path', () => {
   const source = '/docs/file1.md';
   const target = '/docs/dir/file2.md';
-  const path = getRelativePath(source, target, options);
+  const path = getRelativePath(source, target, options as IOptions);
+  
   it('finds the file', () => {
     expect(path).toBe('/docs/terms/dir/file2');
   });
@@ -23,7 +25,8 @@ describe('get relative path', () => {
 
 describe('add import statement', () => {
   const content = '# Hospitality';
-  var newContent = addJSImportStatement(content);
+  const newContent = addJSImportStatement(content);
+  
   it('gets the updated content with the import statement', () => {
     expect(newContent).toBe(
       '\n\nimport Term from "@philippnagel/docusaurus-next-terminology/components/tooltip.js";\n' +
@@ -34,7 +37,8 @@ describe('add import statement', () => {
 
 describe('add import statement in empty file', () => {
   const content = '';
-  var newContent = addJSImportStatement(content);
+  const newContent = addJSImportStatement(content);
+  
   it('gets the updated content with the import statement', () => {
     expect(newContent).toBe(
       content +
@@ -44,18 +48,20 @@ describe('add import statement in empty file', () => {
 });
 
 describe('get the term name and reference from the regex match', () => {
-  const matchPattern = '%%Term name$term%%';
-  const separator = '$';
-  var tokens = getCleanTokens(matchPattern, separator);
+  const matchPattern = '%%Term name|term%%';
+  const separator = '|';
+  const tokens = getCleanTokens(matchPattern, separator);
+  
   it('the clean tokens', () => {
     expect(tokens).toStrictEqual(['Term name', 'term']);
   });
 });
 
 describe('get the term name and reference (without the file extension)', () => {
-  const matchPattern = '%%Mr.Doe$term.md%%';
-  const separator = '$';
-  var tokens = getCleanTokens(matchPattern, separator);
+  const matchPattern = '%%Mr.Doe|term.md%%';
+  const separator = '|';
+  const tokens = getCleanTokens(matchPattern, separator);
+  
   it('the clean tokens', () => {
     expect(tokens).toStrictEqual(['Mr.Doe', 'term']);
   });
@@ -81,6 +87,6 @@ it('filter the terms based on the type: concept', async () => {
   const files = await getFiles(basePath, []);
   const terms = await preloadTerms(files);
   const glossaryTermPatterns = ['concept'];
-  var typeTerms = filterTypeTerms(terms, glossaryTermPatterns);
+  const typeTerms = filterTypeTerms(terms, glossaryTermPatterns);
   expect(typeTerms.length).toEqual(1);
 });

@@ -302,8 +302,9 @@ plugins: [
 ## To Do
 
 - [ ] Include addtional options in the `Term` tag to control classes
+- See [TODO.md](TODO.md) for more details
 
 ## Original Author
 
 This plugin has been originally developed by Thanasis Katsadas <kathan@admin.grnet.gr> and the Greek Government. 
-The original work is still available on [GRNet Gitlab](https://gitlab.grnet.gr/terminology/docusaurus-terminology). 
+The original work is still available on [github.com/grnet/docusaurus-terminology](https://github.com/grnet/docusaurus-terminology). 
