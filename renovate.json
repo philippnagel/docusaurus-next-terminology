@@ -1,9 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ],
-  "baseBranches": ["main"],
+  "extends": ["config:recommended"],
+  "baseBranchPatterns": ["main"],
   "semanticCommits": "enabled",
   "semanticCommitType": "chore",
   "semanticCommitScope": "deps",
@@ -13,28 +11,26 @@
   "dependencyDashboardTitle": "Dependency Dashboard",
   "schedule": ["before 5am on monday"],
   "timezone": "Europe/Berlin",
-  
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@mui/"],
       "groupName": "MUI packages",
-      "groupSlug": "mui"
+      "groupSlug": "mui",
+      "matchPackageNames": ["/^@mui//"]
     },
     {
-      "matchPackagePatterns": ["^react", "^@types/react"],
       "groupName": "React packages",
-      "groupSlug": "react"
+      "groupSlug": "react",
+      "matchPackageNames": ["/^react/", "/^@types/react/"]
     },
     {
-      "matchPackagePatterns": ["^@docusaurus"],
       "groupName": "Docusaurus packages",
-      "groupSlug": "docusaurus"
+      "groupSlug": "docusaurus",
+      "matchPackageNames": ["/^@docusaurus/"]
     },
     {
-      "matchPackagePatterns": ["^@types/"],
-      "excludePackagePatterns": ["^@types/react"],
       "groupName": "Type definitions",
-      "groupSlug": "types"
+      "groupSlug": "types",
+      "matchPackageNames": ["/^@types//", "!/^@types/react/"]
     },
     {
       "matchDepTypes": ["devDependencies"],
@@ -44,10 +40,9 @@
     {
       "matchPackageNames": ["typescript"],
       "matchUpdateTypes": ["major"],
-      "stabilityDays": 7
+      "minimumReleaseAge": "7 days"
     }
   ],
-  
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 5am on monday"],
@@ -56,6 +51,5 @@
     "commitMessageExtra": "for improved security and dependency resolution",
     "rebaseWhen": "conflicted"
   },
-  
   "postUpdateOptions": ["yarnDedupeHighest"]
 }
